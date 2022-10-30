@@ -1,0 +1,73 @@
+{
+  "name": "easy-kube",
+  "version": "1.0.0",
+  "description": "Create a developpement Kubernetes cluster and automate some service deployment",
+  "dependencies": {
+    "fs-extra": "^10.1.0",
+    "got": "^10.7.0",
+    "lodash": "^4.17.21",
+    "mustache": "^4.2.0",
+    "node-vault": "^0.9.22",
+    "packpath": "^0.1.0",
+    "rimraf": "^3.0.2",
+    "winston": "^3.8.2",
+    "yaml": "^2.1.3",
+    "yargs": "^17.1.1"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/got": "^9.6.9",
+    "@types/lodash": "^4.14.186",
+    "@types/mustache": "^4.1.2",
+    "@types/node": "^14.17.14",
+    "@types/node-vault": "^0.9.13",
+    "@types/winston": "^2.4.4",
+    "@types/yaml": "^1.9.7",
+    "@types/yargs": "^17.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "eslint": "^8.26.0",
+    "eslint-config-standard-with-typescript": "^23.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsdoc": "^39.4.0",
+    "eslint-plugin-n": "^15.3.0",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-promise": "^6.1.1",
+    "typescript": "^4.8.4"
+  },
+  "scripts": {
+    "pre-publish": "npm run clean-compile",
+    "start": "node .",
+    "clean": "rimraf build",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint-fix": "npm run lint -- --fix",
+    "compile": "tsc -v && tsc --pretty",
+    "compile-watch": "tsc --pretty -w",
+    "clean-compile": "npm run clean && npm run compile",
+    "clean-lint-compile": "npm run clean && npm run lint && echo Using TypeScript && npm run compile"
+  },
+  "bin": {
+    "easy-kube": "./bin/index.js"
+  },
+  "main": "./bin/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScriptSathi/EasyKube.git"
+  },
+  "keywords": [
+    "kubernetes",
+    "k8s",
+    "pentest",
+    "cybersecurity",
+    "typescript",
+    "node",
+    "js",
+    "developpement",
+    "cluster"
+  ],
+  "author": "Tristan d'Audibert",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ScriptSathi/EasyKube/issues"
+  },
+  "homepage": "https://github.com/ScriptSathi/EasyKube#readme"
+}
