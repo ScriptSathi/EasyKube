@@ -3,12 +3,20 @@ Create a developpement Kubernetes cluster and automate some service deployment
 
 ## Prerequisite:
 
-- Install [Kind](https://kind.sigs.k8s.io/)
+- Install [Kind] binary (https://kind.sigs.k8s.io/)
 - kubectl (version >= 1.21)
 - Helm (version > 3.7.1)
 
-For now the new code is only on developpement branch.
+## Installation
+
+## Build the project
 You can try it out running `npm i && npm i -g .`
+
+### Compiling the code
+
+```
+npm run compile
+```
 
 ## Usage
 
@@ -45,10 +53,10 @@ To don't break your cluster if you're already connecting to one of it, kind is i
 - Without disconnecting from you current cluster
 ```bash
 alias keasy="kubectl --kubeconfig=$HOME/.kube/conf-files/kind-easykube"
-# Usage: klocal get pod
+# Usage: keasy get pod
 ```
 - Soit en remplaçant le fichier de config pour une interaction permanente
 ```bash
 alias kuse-easykube="cp -T ~/.kube/conf-files/kind-easykube ~/.kube/config"
-# Usage: k-use-local && kubectl get pod
+# Usage: kuse-local && kubectl get pod
 ```

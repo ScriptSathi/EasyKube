@@ -33,15 +33,13 @@
     "typescript": "^4.8.4"
   },
   "scripts": {
-    "pre-publish": "npm run clean-compile",
     "start": "node .",
     "clean": "rimraf build",
     "lint": "eslint 'src/**/*.ts'",
     "lint-fix": "npm run lint -- --fix",
     "compile": "tsc -v && tsc --pretty",
     "compile-watch": "tsc --pretty -w",
-    "clean-compile": "npm run clean && npm run compile",
-    "clean-lint-compile": "npm run clean && npm run lint && echo Using TypeScript && npm run compile"
+    "clean-compile": "npm run clean && npm run compile"
   },
   "bin": {
     "easykube": "./bin/index.js"
