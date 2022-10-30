@@ -49,6 +49,6 @@ alias keasy="kubectl --kubeconfig=$HOME/.kube/conf-files/kind-easykube"
 ```
 - Soit en remplaçant le fichier de config pour une interaction permanente
 ```bash
-alias k-use-easykube="cp -T ~/.kube/conf-files/kind-easykube ~/.kube/config"
+alias kuse-easykube="cp -T ~/.kube/conf-files/kind-easykube ~/.kube/config"
 # Usage: k-use-local && kubectl get pod
 ```

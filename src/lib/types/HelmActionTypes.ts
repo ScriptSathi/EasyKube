@@ -1,9 +1,10 @@
 export type helmUpgrade = {
     namespace: string;
     chartName: string;
-    repoName?: string;
+    repoName: string;
+    repoUrl: string;
     version?: string;
-    args?: string[];
+    setArgs?: string[];
     manifestDir?: string;
     dependencyUpdate?: boolean;
     createNs?: boolean;

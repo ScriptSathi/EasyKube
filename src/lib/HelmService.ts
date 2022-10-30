@@ -1,4 +1,5 @@
 import * as _ from 'lodash';
+import { Actions } from './actions/Action';
 
 import { helmRepositoryData } from './types/HelmServiceTypes';
 
@@ -6,12 +7,12 @@ interface IHelmServiceValues {
     serviceName: string;
     namespace: string;
     chartName: string;
-    createNs: boolean;
     repoName: string;
     version: string;
-    commandExampleDoc: string;
-    set: [string];
+    set: string[];
     helmRepositoryData: helmRepositoryData;
+    commandExampleDoc?: string;
+    createNs?: boolean;
 }
 
 class HelmServiceRaw implements IHelmServiceValues{
@@ -24,6 +25,7 @@ class HelmServiceRaw implements IHelmServiceValues{
     public commandExampleDoc: string;
     public set: [string];
     public helmRepositoryData: helmRepositoryData;
+    public actions: Actions;
 }
 
 export class HelmService extends HelmServiceRaw {
@@ -34,9 +36,9 @@ export class HelmService extends HelmServiceRaw {
     }
 
     /* eslint-disable-next-line  @typescript-eslint/no-empty-function */
-    public install(): void {}
+    public async install(): Promise<void> {}
     /* eslint-disable-next-line  @typescript-eslint/no-empty-function */
-    public uninstall(): void {}
+    public async uninstall(): Promise<void> {}
 }
 
 export type THelmService = new () => HelmService;

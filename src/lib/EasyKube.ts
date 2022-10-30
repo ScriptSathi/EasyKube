@@ -29,9 +29,10 @@ export class EasyKube extends Context {
             await this.installCluster();
         }
         else if (await this.kubeCluster.isClusterAlreadyExist()){
-            _.map(this.services, service => {
+            _.map(this.services, async service => {
                 if (option === service.serviceName){
-                    service.install();
+                    service.actions = this.actions;
+                    await service.install();
                 }
             });
         } else {
@@ -42,9 +43,10 @@ export class EasyKube extends Context {
 
     public async uninstall(option: string): Promise<void> {
         if (await this.kubeCluster.isClusterAlreadyExist()){
-            _.map(this.services, service => {
+            _.map(this.services, async service => {
                 if (option === service.serviceName){
-                    service.uninstall();
+                    service.actions = this.actions;
+                    await service.uninstall();
                 }
             });
         } else {
@@ -61,8 +63,9 @@ export class EasyKube extends Context {
     }
 
     private async installAllServices(): Promise<void> {
-        _.map(this.services, service => {
-            service.install();
+        _.map(this.services, async service => {
+            service.actions = this.actions;
+            await service.install();
         });
     }
 }

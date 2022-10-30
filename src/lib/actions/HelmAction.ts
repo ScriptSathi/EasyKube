@@ -19,21 +19,22 @@ export class HelmAction {
     public async upgrade({ 
         namespace,
         repoName,
+        repoUrl,
         chartName,
         manifestDir,
         version,
         dependencyUpdate,
-        args = [],
+        setArgs = [],
         createNs  = false,
         _wait = false, 
         timeout = 90, 
     }: helmUpgrade): Promise<void> {
-        function buildArgs(argsArr: string[]): string {
-            let _args = '';
-            _.forEach(argsArr, arg => {
-                _args += `--set=${arg} `;
+        function setAuildArgs(setArgsArr: string[]): string {
+            let setAargs = '';
+            _.forEach(setArgsArr, arg => {
+                setAargs += `--set=${arg} `;
             });
-            return _args;
+            return setAargs;
         }
         const waitCmd = _wait ? `--timeout=${timeout}s --wait` : '';
         const createNsCmd = createNs ? '--create-namespace ' : '';
@@ -48,14 +49,14 @@ export class HelmAction {
                 `--namespace=${namespace} ` +
                 `${createNsCmd}` +
                 `${versionCmd}`+
-                `${buildArgs(args)} ` +
+                `${setAuildArgs(setArgs)} ` +
                 `${waitCmd}`,
             );
         }
         catch (e){
-            if (!e.message.match(/coalesce.go:199:/g) && repoName){
-                await this.helmInstallRepository(repoName);
-                await this.upgrade({ namespace, repoName, chartName, manifestDir, version, dependencyUpdate, args, createNs, _wait,  timeout }) ;
+            if (e.message.match(`repo ${repoName} not found`)){
+                await this.helmInstallRepository(repoName, repoUrl);
+                await this.upgrade({ namespace, repoName, repoUrl, chartName, manifestDir, version, dependencyUpdate, setArgs, createNs, _wait,  timeout }) ;
             }
         }
     }
@@ -68,33 +69,8 @@ export class HelmAction {
         await this.utils.execAndDisplay(`${this.helmCommand} uninstall -n ${namespace} ${chartName}`);
     }
 
-    private async helmInstallRepository(repoName: string, url?: string): Promise<void>{
-        async function installRepoAndUpdate(utils: CommandUtils, _repoName: string, _url: string): Promise<void> {
-            await utils.execAndDisplay(`${utils.helmCommand} repo add ${_repoName} ${_url}`);
-            await utils.execAndDisplay(`${utils.helmCommand} repo update ${_repoName}`);
-        }
-        if (url){
-            this.utils.execAndReturn(`${this.helmCommand} repo add ${repoName} ${url}`);
-            installRepoAndUpdate(this.utils, repoName, url);
-        }
-        else {
-            let _url: string = '';
-            switch (repoName) {
-            case 'jetstack':
-                _url = 'https://charts.jetstack.io';
-                break;
-            case 'bitnami':
-                _url = 'https://charts.bitnami.com/bitnami';
-                break;
-            case 'metrics-server':
-                _url = 'https://kubernetes-sigs.github.io/metrics-server/';
-                break;
-            default:
-                _url = 'http://localhost';
-                logger.info(`Fail to install repository ${repoName}`);
-                break;
-            }
-            await installRepoAndUpdate(this.utils, repoName, _url);
-        }
+    private async helmInstallRepository(repoName: string, url: string): Promise<void>{
+        await this.utils.execAndDisplay(`${this.utils.helmCommand} repo add ${repoName} ${url}`);
+        await this.utils.execAndDisplay(`${this.utils.helmCommand} repo update ${repoName}`);
     }
 }

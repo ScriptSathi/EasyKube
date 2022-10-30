@@ -7,23 +7,33 @@ export class MetricsServer extends HelmService {
             serviceName: 'metrics-server',
             namespace: 'kube-system',
             chartName: 'metrics-server',
-            createNs: true,
-            repoName: '',
-            version: '',
+            createNs: false,
+            repoName: 'metrics-server',
+            version: '3.7.0',
             commandExampleDoc: 'a metric server to view cluster ressources',
-            set: [''],
+            set: [
+                'args[0]="--kubelet-insecure-tls=true"',
+                'args[1]="--kubelet-preferred-address-types=InternalIP"',
+            ],
             helmRepositoryData: {
-                repoName: '',
-                repoUrl: '',
+                repoName: 'metrics-server',
+                repoUrl: 'https://kubernetes-sigs.github.io/metrics-server/',
             },
         });
     }
 
-    public install(): void {
-        logger.info('from Metrics Server');
-        throw new Error('Method not implemented.');
+    public async install(): Promise<void> {
+        await this.actions.helm.upgrade({ 
+            namespace: this.namespace,
+            repoName: this.repoName,
+            repoUrl: this.helmRepositoryData.repoUrl,
+            chartName: this.chartName,
+            version: this.version,
+            setArgs: this.set,
+        })
     }
-    public uninstall(): void {
+
+    public async uninstall(): Promise<void> {
         logger.info('UNINSTALL');
         throw new Error('Method not implemented.');
     }
