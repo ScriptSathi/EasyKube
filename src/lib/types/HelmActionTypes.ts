@@ -10,8 +10,3 @@ export type helmUpgrade = {
     _wait?: boolean;
     timeout?: number;
 };
-
-export type TspawnOptions = {
-    stdio?: boolean;
-    debug?: boolean;
-};

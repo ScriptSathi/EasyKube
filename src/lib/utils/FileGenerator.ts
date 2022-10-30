@@ -4,15 +4,20 @@ import * as fs from 'fs-extra';
 export class FileGenerator {
 
     public templateName: string;
-    public pathToSavedFile: string;
+    public directoryWhereToSavedFile: string;
+    public filePath: string;
 
     constructor(templateName: string, pathToSavedFile: string){
-        this.pathToSavedFile = pathToSavedFile;
+        this.directoryWhereToSavedFile = pathToSavedFile;
         this.templateName = templateName;
     }
 
     public async generateYaml(data: {[key: string]: string}): Promise<void> {
         const yaml = stringify(data);
-        await fs.writeFile(this.pathToSavedFile, yaml);
+        if (! fs.existsSync(this.directoryWhereToSavedFile)){
+            await fs.ensureDir(this.directoryWhereToSavedFile);
+        }
+        this.filePath = `${this.directoryWhereToSavedFile}/${this.templateName}.yaml`;
+        await fs.writeFile(this.filePath, yaml);
     }
 }

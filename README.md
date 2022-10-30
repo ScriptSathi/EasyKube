@@ -8,7 +8,7 @@ Create a developpement Kubernetes cluster and automate some service deployment
 - Helm (version > 3.7.1)
 
 For now the new code is only on developpement branch.
-You can tryit out running `npm i && npm i -g .`
+You can try it out running `npm i && npm i -g .`
 
 ## Usage
 
@@ -17,6 +17,7 @@ You can tryit out running `npm i && npm i -g .`
 ```
 easykube (-h)
 ```
+
 ### Install all components
 
 ```

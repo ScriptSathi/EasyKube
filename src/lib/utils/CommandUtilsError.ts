@@ -7,7 +7,7 @@ enum ErrorCodes {
     UNKNOW_ERROR = 1010,
 }
 
-export class KubeUtilsError extends Error {
+export class CommandUtilsError extends Error {
     public code: ErrorCodes;
     public errorCode: string;
 

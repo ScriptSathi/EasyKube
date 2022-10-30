@@ -1,12 +1,11 @@
 {
-  "name": "easy-kube",
+  "name": "easykube",
   "version": "1.0.0",
   "description": "Create a developpement Kubernetes cluster and automate some service deployment",
   "dependencies": {
     "fs-extra": "^10.1.0",
     "got": "^10.7.0",
     "lodash": "^4.17.21",
-    "mustache": "^4.2.0",
     "node-vault": "^0.9.22",
     "packpath": "^0.1.0",
     "rimraf": "^3.0.2",
@@ -18,7 +17,6 @@
     "@types/fs-extra": "^9.0.13",
     "@types/got": "^9.6.9",
     "@types/lodash": "^4.14.186",
-    "@types/mustache": "^4.1.2",
     "@types/node": "^14.17.14",
     "@types/node-vault": "^0.9.13",
     "@types/winston": "^2.4.4",
@@ -46,7 +44,7 @@
     "clean-lint-compile": "npm run clean && npm run lint && echo Using TypeScript && npm run compile"
   },
   "bin": {
-    "easy-kube": "./bin/index.js"
+    "easykube": "./bin/index.js"
   },
   "main": "./bin/index.js",
   "repository": {
