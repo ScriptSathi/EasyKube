@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 
-import { THelmService, HelmService } from '../HelmService';
+import { THelmService, HelmService } from '../services/HelmService';
+import { KubernetesDashboard } from '../services/KubernetesDashboard';
 import { MetricsServer } from '../services/MetricsServer';
 import { TUnbuildmodules } from '../types/InstallerHooksTypes';
 
@@ -16,6 +17,7 @@ export class InstallerHook {
     private static get UnbuildServicesList(): THelmService[] {
         return [
             MetricsServer,
+            KubernetesDashboard,
         ];
     }
 
@@ -25,6 +27,7 @@ export class InstallerHook {
                 name: 'metrics',
                 services: [
                     'metrics-server',
+                    'kubernetes-dashboard',
                 ],
             },
         ];

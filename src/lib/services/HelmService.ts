@@ -1,16 +1,16 @@
 import * as _ from 'lodash';
 
-import { Actions } from './actions/Action';
-import { helmRepositoryData } from './types/HelmServiceTypes';
+import { Actions } from '../actions/Action';
+import { helmRepositoryData } from '../types/HelmServiceTypes';
 
 interface IHelmServiceValues {
     serviceName: string;
     namespace: string;
     chartName: string;
-    repoName: string;
     version: string;
     set: string[];
     helmRepositoryData: helmRepositoryData;
+    ingressEndpoint?: string;
     commandExampleDoc?: string;
     createNs?: boolean;
 }
@@ -19,13 +19,13 @@ class HelmServiceRaw implements IHelmServiceValues{
     public serviceName: string;
     public namespace: string;
     public chartName: string;
-    public createNs: boolean = false;
-    public repoName: string;
     public version: string;
     public commandExampleDoc: string;
     public set: [string];
     public helmRepositoryData: helmRepositoryData;
     public actions: Actions;
+    public createNs: boolean = false;
+    public ingressEndpoint: string = '';
 }
 
 export class HelmService extends HelmServiceRaw {

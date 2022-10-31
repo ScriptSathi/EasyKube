@@ -1,21 +1,22 @@
 import { HelmService } from './HelmService';
 import { logger } from '../utils/Logger';
 
-export class MetricsServer extends HelmService {
+export class KubernetesDashboard extends HelmService {
     constructor() {
         super({
-            serviceName: 'metrics-server',
+            serviceName: 'kubernetes-dashboard',
             namespace: 'kube-system',
-            chartName: 'metrics-server',
-            version: '3.7.0',
-            commandExampleDoc: 'a metric server to view cluster ressources',
+            chartName: 'kubernetes-dashboard',
+            version: '5.11.0',
+            commandExampleDoc: 'a the kubernetes dashboard webui',
             set: [
-                'args[0]="--kubelet-insecure-tls=true"',
-                'args[1]="--kubelet-preferred-address-types=InternalIP"',
+                'ingress.enabled=true',
+                `ingress.hosts[0]=dashboard.easykube.net`,
             ],
+            ingressEndpoint: 'dashboard.easykub.net',
             helmRepositoryData: {
-                repoName: 'metrics-server',
-                repoUrl: 'https://kubernetes-sigs.github.io/metrics-server/',
+                repoName: 'kubernetes-dashboard',
+                repoUrl: 'https://kubernetes.github.io/dashboard/',
             },
         });
     }
