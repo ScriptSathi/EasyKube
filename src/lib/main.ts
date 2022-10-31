@@ -16,14 +16,14 @@ async function main(): Promise<void> {
         .command('install [option]', 'Allow you to install microservices',
             async (args: yargs.Argv) => {
                 return args
-                    .example(yargsHelper.serviceExamples('install'))
+                    .example(yargsHelper.moduleExamples('install'))
                     .positional('option', {
-                        choices: yargsHelper.servicesOptions,
+                        choices: yargsHelper.moduleOptions,
                         describe: `Run easykube with specific option`,
                         type: 'string',
                     });
             }, async (_argv: yargs.Arguments) => {
-                if (_argv.option !== '') {
+                if (_argv.option !== '' && _argv.option !== undefined) {
                     await easyKubeInstaller.install(_argv.option as string);
                 } else {
                     logger.info(_argv.option);
@@ -126,7 +126,7 @@ async function main(): Promise<void> {
             default: false,
         })
         .check((_argv: yargs.Arguments<{debug: boolean}>) => {
-            easyKubeInstaller = new EasyKube(yargsHelper.serviceHook.servicesList, _argv.debug as boolean);
+            easyKubeInstaller = new EasyKube(yargsHelper.serviceHook, _argv.debug as boolean);
             return true;
         })
         .strict(true)

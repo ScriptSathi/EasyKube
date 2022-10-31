@@ -30,7 +30,7 @@ export class MetricsServer extends HelmService {
             chartName: this.chartName,
             version: this.version,
             setArgs: this.set,
-        })
+        });
     }
 
     public async uninstall(): Promise<void> {

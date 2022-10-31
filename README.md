@@ -3,9 +3,10 @@ Create a developpement Kubernetes cluster and automate some service deployment
 
 ## Prerequisite:
 
-- Install [Kind] binary (https://kind.sigs.k8s.io/)
-- kubectl (version >= 1.21)
-- Helm (version > 3.7.1)
+- Node (v14 or higher) and npm
+- Install [Kind](https://kind.sigs.k8s.io/) binary 
+- [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) (version >= 1.21)
+- [Helm](https://helm.sh/docs/intro/install/#from-script) (version > 3.7.1)
 
 ## Installation
 
@@ -22,8 +23,15 @@ npm run compile
 
 ### Display documentation
 
+### If you have installed the CLI
+
 ```
 easykube (-h)
+```
+### Without installing the CLI
+
+```
+node bin/index.js -h
 ```
 
 ### Install all components

@@ -1,6 +1,5 @@
 import * as _ from 'lodash';
 
-import { logger } from '../utils/Logger';
 import { helmUpgrade } from '../types/HelmActionTypes';
 import { CommandUtils } from '../utils/CommandUtils';
 

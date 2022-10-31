@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
-import { Actions } from './actions/Action';
 
+import { Actions } from './actions/Action';
 import { helmRepositoryData } from './types/HelmServiceTypes';
 
 interface IHelmServiceValues {

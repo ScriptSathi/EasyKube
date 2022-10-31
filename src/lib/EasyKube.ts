@@ -2,25 +2,25 @@ import * as _ from 'lodash';
 
 import { Actions } from './actions/Action';
 import { Context } from './Context';
-import { HelmService } from './HelmService';
+import { InstallerHook } from './hooks/InstallerHook';
 import { KubeCluster } from './KubeCluster';
 import { logger } from './utils/Logger';
 
 export class EasyKube extends Context {
 
-    private services: HelmService[];
+    private installerHook: InstallerHook;
     private kubeCluster: KubeCluster;
     private actions: Actions;
 
-    constructor(services: HelmService[], debugMode: boolean){
+    constructor(installerHook: InstallerHook, debugMode: boolean){
         super();
         this.setContext(debugMode);
-        this.services = services;
+        this.installerHook = installerHook;
         this.actions = new Actions(this.helmCommand, this.kubectlCommand, debugMode);
         this.kubeCluster = new KubeCluster(this.actions, this.kubeConfig);
     }
 
-    public async install(option: string): Promise<void> {
+    public async install(option: string, isAModule: boolean = true): Promise<void> {
         if (option === 'all'){
             await this.installCluster();
             await this.installAllServices();
@@ -29,12 +29,11 @@ export class EasyKube extends Context {
             await this.installCluster();
         }
         else if (await this.kubeCluster.isClusterAlreadyExist()){
-            _.map(this.services, async service => {
-                if (option === service.serviceName){
-                    service.actions = this.actions;
-                    await service.install();
-                }
-            });
+            if (isAModule){
+                this.moduleInstall(option);
+            } else {
+                this.serviceInstall(option);
+            }
         } else {
             await this.installCluster();
             await this.install(option);
@@ -43,7 +42,7 @@ export class EasyKube extends Context {
 
     public async uninstall(option: string): Promise<void> {
         if (await this.kubeCluster.isClusterAlreadyExist()){
-            _.map(this.services, async service => {
+            _.map(this.installerHook.servicesList, async service => {
                 if (option === service.serviceName){
                     service.actions = this.actions;
                     await service.uninstall();
@@ -58,12 +57,32 @@ export class EasyKube extends Context {
         await this.kubeCluster.uninstall();
     }
 
+    private async moduleInstall(option: string): Promise<void> {
+        _.map(this.installerHook.modulesList, async module => {
+            if (option === module.name){
+                _.map(module.services, async service => {
+                    service.actions = this.actions;
+                    await service.install();
+                });
+            }
+        });
+    }
+
+    private async serviceInstall(option: string): Promise<void> {
+        _.map(this.installerHook.servicesList, async service => {
+            if (option === service.serviceName){
+                service.actions = this.actions;
+                await service.install();
+            }
+        });
+    }
+
     private async installCluster(): Promise<void> {
         await this.kubeCluster.install();
     }
 
     private async installAllServices(): Promise<void> {
-        _.map(this.services, async service => {
+        _.map(this.installerHook.servicesList, async service => {
             service.actions = this.actions;
             await service.install();
         });
