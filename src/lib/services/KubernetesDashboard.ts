@@ -2,12 +2,12 @@ import { HelmService } from './HelmService';
 import { logger } from '../utils/Logger';
 
 export class KubernetesDashboard extends HelmService {
-    constructor() {
+    public constructor() {
         super({
             serviceName: 'kubernetes-dashboard',
             namespace: 'kube-system',
             chartName: 'kubernetes-dashboard',
-            version: '5.11.0',
+            chartVersion: '5.11.0',
             commandExampleDoc: 'a the kubernetes dashboard webui',
             set: [
                 'ingress.enabled=true',
@@ -27,7 +27,7 @@ export class KubernetesDashboard extends HelmService {
             repoName: this.helmRepositoryData.repoName,
             repoUrl: this.helmRepositoryData.repoUrl,
             chartName: this.chartName,
-            version: this.version,
+            chartVersion: this.chartVersion,
             setArgs: this.set,
         });
     }

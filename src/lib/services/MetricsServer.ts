@@ -2,12 +2,12 @@ import { HelmService } from './HelmService';
 import { logger } from '../utils/Logger';
 
 export class MetricsServer extends HelmService {
-    constructor() {
+    public  constructor() {
         super({
             serviceName: 'metrics-server',
             namespace: 'kube-system',
             chartName: 'metrics-server',
-            version: '3.7.0',
+            chartVersion: '3.7.0',
             commandExampleDoc: 'a metric server to view cluster ressources',
             set: [
                 'args[0]="--kubelet-insecure-tls=true"',
@@ -26,7 +26,7 @@ export class MetricsServer extends HelmService {
             repoName: this.helmRepositoryData.repoName,
             repoUrl: this.helmRepositoryData.repoUrl,
             chartName: this.chartName,
-            version: this.version,
+            chartVersion: this.chartVersion,
             setArgs: this.set,
         });
     }

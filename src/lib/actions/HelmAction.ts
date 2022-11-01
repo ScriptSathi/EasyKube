@@ -21,7 +21,7 @@ export class HelmAction {
         repoUrl,
         chartName,
         manifestDir,
-        version,
+        chartVersion,
         dependencyUpdate,
         setArgs = [],
         createNs  = false,
@@ -38,7 +38,7 @@ export class HelmAction {
         const waitCmd = _wait ? `--timeout=${timeout}s --wait` : '';
         const createNsCmd = createNs ? '--create-namespace ' : '';
         const chart = manifestDir ? manifestDir : `${repoName}/${chartName}`;
-        const versionCmd = version ? `--version=${version} ` : '';
+        const chartVersionCmd = chartVersion ? `--version=${chartVersion} ` : '';
 
         if (dependencyUpdate){
             this.utils.execAndReturn(`${this.helmCommand} dependency update`, manifestDir);
@@ -47,7 +47,7 @@ export class HelmAction {
             await this.utils.execAndDisplay(`${this.helmCommand} upgrade -i ${chartName} ${chart} ` +
                 `--namespace=${namespace} ` +
                 `${createNsCmd}` +
-                `${versionCmd}`+
+                `${chartVersionCmd}`+
                 `${setAuildArgs(setArgs)} ` +
                 `${waitCmd}`,
             );
@@ -55,7 +55,7 @@ export class HelmAction {
         catch (e){
             if (e.message.match(`repo ${repoName} not found`)){
                 await this.helmInstallRepository(repoName, repoUrl);
-                await this.upgrade({ namespace, repoName, repoUrl, chartName, manifestDir, version, dependencyUpdate, setArgs, createNs, _wait,  timeout }) ;
+                await this.upgrade({ namespace, repoName, repoUrl, chartName, manifestDir, chartVersion, dependencyUpdate, setArgs, createNs, _wait,  timeout }) ;
             }
         }
     }

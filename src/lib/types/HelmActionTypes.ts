@@ -3,7 +3,7 @@ export type helmUpgrade = {
     chartName: string;
     repoName: string;
     repoUrl: string;
-    version?: string;
+    chartVersion?: string;
     setArgs?: string[];
     manifestDir?: string;
     dependencyUpdate?: boolean;

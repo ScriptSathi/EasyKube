@@ -99,7 +99,6 @@ function main(): void {
     .showHelpOnFail(true)
     .usage('Usage: $0 <command>')
     .help('help')
-    .locale('en')
     .completion('autocompletion', 
         'Generate the autocompletion script for bash/zsh. You need to put the generated code in your .bashrc/.zshrc and reload your shell')
     .argv;

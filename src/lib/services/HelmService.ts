@@ -7,7 +7,7 @@ interface IHelmServiceValues {
     serviceName: string;
     namespace: string;
     chartName: string;
-    version: string;
+    chartVersion: string;
     set: string[];
     helmRepositoryData: helmRepositoryData;
     ingressEndpoint?: string;
@@ -19,7 +19,7 @@ class HelmServiceRaw implements IHelmServiceValues{
     public serviceName: string;
     public namespace: string;
     public chartName: string;
-    public version: string;
+    public chartVersion: string;
     public commandExampleDoc: string;
     public set: [string];
     public helmRepositoryData: helmRepositoryData;
@@ -30,7 +30,7 @@ class HelmServiceRaw implements IHelmServiceValues{
 
 export class HelmService extends HelmServiceRaw {
 
-    constructor(helmData: IHelmServiceValues) {
+    public  constructor(helmData: IHelmServiceValues) {
         super();
         _.assign(this, helmData);
     }
