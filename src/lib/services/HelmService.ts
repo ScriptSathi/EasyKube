@@ -30,7 +30,7 @@ class HelmServiceRaw implements IHelmServiceValues{
 
 export class HelmService extends HelmServiceRaw {
 
-    public  constructor(helmData: IHelmServiceValues) {
+    constructor(helmData: IHelmServiceValues) {
         super();
         _.assign(this, helmData);
     }

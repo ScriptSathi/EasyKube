@@ -1,7 +1,7 @@
 import { HelmService } from './HelmService';
 
 export class MetricsServer extends HelmService {
-    public constructor() {
+    constructor() {
         super({
             serviceName: 'metrics-server',
             namespace: 'kube-system',

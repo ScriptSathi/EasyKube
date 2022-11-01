@@ -12,7 +12,7 @@ export class EasyKube extends Context {
     private kubeCluster: KubeCluster;
     private actions: Actions;
 
-    public constructor(installerHook: InstallerHook, debugMode: boolean){
+    constructor(installerHook: InstallerHook, debugMode: boolean){
         super();
         this.setContext(debugMode);
         this.installerHook = installerHook;
@@ -44,9 +44,9 @@ export class EasyKube extends Context {
     public async uninstall(option: string, isAModule: boolean = true): Promise<void> {
         if (await this.kubeCluster.isClusterAlreadyExist()){
             if (isAModule){
-                this.moduleUninstall(option)
+                this.moduleUninstall(option);
             } else {
-                this.serviceUninstall(option)
+                this.serviceUninstall(option);
             }
         } else {
             logger.info('The cluster does not exists !');
@@ -63,6 +63,7 @@ export class EasyKube extends Context {
                 _.map(module.services, async service => {
                     service.actions = this.actions;
                     await service.install();
+                    await this.actions.kubectl.addEasyKubeLabels(service.namespace, service.serviceName, module.name);
                 });
             }
         });
@@ -70,13 +71,13 @@ export class EasyKube extends Context {
 
     private moduleUninstall(option: string): void {
         for (const module of this.installerHook.modulesList){
-            if(module.name === option){
+            if (module.name === option){
                 _.map(module.services, async service => {
                     service.actions = this.actions;
                     await service.uninstall();
                 });
             }
-        logger.info(`The module ${option} has been uninstalled`);
+            logger.info(`The module ${option} has been uninstalled`);
         }
     }
 
@@ -95,6 +96,7 @@ export class EasyKube extends Context {
             if (option === service.serviceName){
                 service.actions = this.actions;
                 await service.install();
+                await this.actions.kubectl.addEasyKubeLabels(service.namespace, service.serviceName);
             }
         });
     }

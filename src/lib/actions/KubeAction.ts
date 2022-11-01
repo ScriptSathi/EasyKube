@@ -1,3 +1,4 @@
+import { Constants } from '../Constants';
 import { CommandUtils } from '../utils/CommandUtils';
 
 export class KubeAction {
@@ -6,7 +7,7 @@ export class KubeAction {
     public kubectlCommand: string;
     public utils: CommandUtils;
 
-    public constructor(utils: CommandUtils){
+    constructor(utils: CommandUtils){
         this.debugMode = utils.debugMode;
         this.kubectlCommand = utils.kubectlCommand;
         this.utils = utils;
@@ -20,5 +21,29 @@ export class KubeAction {
 
     public async apply(filePath: string) : Promise<void> {
         await this.utils.spawnAndDisplay(`${this.kubectlCommand} apply -f=${filePath}`);
+    }
+
+    public async addEasyKubeLabels(namespace: string, serviceName: string, moduleName: string = ''): Promise<void> {
+        const depType = await this.getDeploymentType(namespace, serviceName);
+        await this.utils.execAndReturn(`${this.kubectlCommand} label ${depType} ` +
+            `--namespace ${namespace} ${serviceName} ${Constants.clusterName}/service=${serviceName}`);
+        if (moduleName !== ''){
+            await this.utils.execAndReturn(`${this.kubectlCommand} label ${depType} `+
+            `--namespace ${namespace} ${serviceName} ${Constants.clusterName}/module=${moduleName}`);
+        }
+    }
+
+    private async getDeploymentType(namespace: string, serviceName: string): Promise<string> {
+        for (const depType of ['deployments', 'statefulsets', 'daemonsets']){
+            try {
+                await this.utils.execAndReturn(`${this.kubectlCommand} get ${depType} --namespace ${namespace} ${serviceName}`);
+                return depType;
+            } catch (e){
+                if (! e.message.match(`"${serviceName}" not found`)) {
+                    throw e;
+                }
+            }
+        }
+        return '';
     }
 }

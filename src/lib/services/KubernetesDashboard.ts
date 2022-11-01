@@ -1,8 +1,7 @@
 import { HelmService } from './HelmService';
-import { logger } from '../utils/Logger';
 
 export class KubernetesDashboard extends HelmService {
-    public constructor() {
+    constructor() {
         super({
             serviceName: 'kubernetes-dashboard',
             namespace: 'kube-system',

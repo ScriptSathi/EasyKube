@@ -12,9 +12,9 @@ function main(): void {
     const yargsHelper = new YargsHelper();
     let easyKubeInstaller: EasyKube;
 
-    yargs
-    .commandDir('commands')
-    .command(['stop [name]', '$1'],
+    const argv = yargs
+        .commandDir('commands')
+        .command(['stop [name]', '$1'],
         `Allow you to stop a running microservice or full domain of microservices`,
         (args: yargs.Argv) => {
             return args
@@ -47,7 +47,7 @@ function main(): void {
                 process.exit(1);
             }
         })
-    .command(['start [name]', '$1'],
+        .command(['start [name]', '$1'],
         `Allow you to start a stopped microservice or full domain of microservices`,
         (args: yargs.Argv) => {
             return args
@@ -80,28 +80,34 @@ function main(): void {
                 process.exit(1);
             }
         })
-    .command('destroy-cluster', 'Destroy the kubernetes cluster',
+        .command('destroy-cluster', 'Destroy the kubernetes cluster',
         _.noop, async () => {
             await easyKubeInstaller.deleteCluster();
         })
-    .option('debug', {
+        .option('debug', {
         alias: 'd',
         describe: `Activate debug mode to display every executed commands`,
         type: 'boolean',
         default: false,
-    })
-    .check((_argv: yargs.Arguments<{debug: boolean}>) => {
+        })
+        .check((_argv: yargs.Arguments<{debug: boolean}>) => {
         easyKubeInstaller = new EasyKube(yargsHelper.serviceHook, _argv.debug as boolean);
         return true;
     })
-    .demandCommand()
-    .strict(true)
-    .showHelpOnFail(true)
-    .usage('Usage: $0 <command>')
-    .help('help')
-    .completion('autocompletion', 
+        .demandCommand()
+        .strict(true)
+        .showHelpOnFail(true)
+        .usage('Usage: $0 <command>')
+        .help('help')
+        .completion('autocompletion', 
         'Generate the autocompletion script for bash/zsh. You need to put the generated code in your .bashrc/.zshrc and reload your shell')
-    .argv;
+        .argv;
+
+    /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */
+    if (!(argv as any)._.length) {
+        yargs.showHelp();
+        process.exit(1);
+    }
 }
 
 (() => {

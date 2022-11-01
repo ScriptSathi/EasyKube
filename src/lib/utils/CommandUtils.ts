@@ -85,7 +85,7 @@ export class CommandUtils {
     public helmCommand: string;
     public kubectlCommand: string;
 
-    public constructor(helmCommand: string, kubectlCommand: string, debugMode: boolean){
+    constructor(helmCommand: string, kubectlCommand: string, debugMode: boolean){
         this.debugMode = debugMode;
         this.kubectlCommand = kubectlCommand;
         this.helmCommand = helmCommand;

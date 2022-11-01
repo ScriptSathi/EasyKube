@@ -7,7 +7,7 @@ export class FileGenerator {
     public directoryWhereToSavedFile: string;
     public filePath: string;
 
-    public constructor(templateName: string, pathToSavedFile: string){
+    constructor(templateName: string, pathToSavedFile: string){
         this.directoryWhereToSavedFile = pathToSavedFile;
         this.templateName = templateName;
     }

@@ -9,7 +9,7 @@ export class HelmAction {
     public helmCommand: string;
     public utils: CommandUtils;
 
-    public constructor(utils: CommandUtils){
+    constructor(utils: CommandUtils){
         this.debugMode = utils.debugMode;
         this.helmCommand = utils.helmCommand;
         this.utils = utils;
@@ -55,7 +55,9 @@ export class HelmAction {
         catch (e){
             if (e.message.match(`repo ${repoName} not found`)){
                 await this.helmInstallRepository(repoName, repoUrl);
-                await this.upgrade({ namespace, repoName, repoUrl, chartName, manifestDir, chartVersion, dependencyUpdate, setArgs, createNs, _wait,  timeout }) ;
+                await this.upgrade(
+                    { namespace, repoName, repoUrl, chartName, manifestDir, chartVersion, dependencyUpdate, setArgs, createNs, _wait,  timeout },
+                );
             }
         }
     }

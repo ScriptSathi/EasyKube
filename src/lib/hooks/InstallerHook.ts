@@ -36,7 +36,7 @@ export class InstallerHook {
     public servicesList: HelmService[];
     public modulesList: TmodulesList;
 
-    public constructor() {
+    constructor() {
         this.servicesList = this.buildServicesList();
         this.modulesList = this.buildModuleList();
     }
