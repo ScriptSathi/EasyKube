@@ -13,27 +13,11 @@ export class KubernetesDashboard extends HelmService {
                 'ingress.enabled=true',
                 `ingress.hosts[0]=dashboard.easykube.net`,
             ],
-            ingressEndpoint: 'dashboard.easykub.net',
+            ingressEndpoint: 'dashboard.easykube.net',
             helmRepositoryData: {
                 repoName: 'kubernetes-dashboard',
                 repoUrl: 'https://kubernetes.github.io/dashboard/',
             },
         });
-    }
-
-    public async install(): Promise<void> {
-        await this.actions.helm.upgrade({ 
-            namespace: this.namespace,
-            repoName: this.helmRepositoryData.repoName,
-            repoUrl: this.helmRepositoryData.repoUrl,
-            chartName: this.chartName,
-            chartVersion: this.chartVersion,
-            setArgs: this.set,
-        });
-    }
-
-    public async uninstall(): Promise<void> {
-        logger.info('UNINSTALL');
-        throw new Error('Method not implemented.');
     }
 }

@@ -25,7 +25,7 @@ export class EasyKube extends Context {
             if (isAModule){
                 if (option === 'all'){
                     await this.installCluster();
-                    await this.installAllServices();
+                    this.installAllServices();
                 }
                 else if (option === 'cluster') {
                     await this.installCluster();
@@ -43,14 +43,13 @@ export class EasyKube extends Context {
 
     public async uninstall(option: string, isAModule: boolean = true): Promise<void> {
         if (await this.kubeCluster.isClusterAlreadyExist()){
-            _.map(this.installerHook.servicesList, async service => {
-                if (option === service.serviceName){
-                    service.actions = this.actions;
-                    await service.uninstall();
-                }
-            });
+            if (isAModule){
+                this.moduleUninstall(option)
+            } else {
+                this.serviceUninstall(option)
+            }
         } else {
-            logger.info('Cluster has not been created yet !');
+            logger.info('The cluster does not exists !');
         }
     }
 
@@ -58,8 +57,8 @@ export class EasyKube extends Context {
         await this.kubeCluster.uninstall();
     }
 
-    private async moduleInstall(option: string): Promise<void> {
-        _.map(this.installerHook.modulesList, async module => {
+    private moduleInstall(option: string): void {
+        _.map(this.installerHook.modulesList, module => {
             if (option === module.name){
                 _.map(module.services, async service => {
                     service.actions = this.actions;
@@ -67,6 +66,28 @@ export class EasyKube extends Context {
                 });
             }
         });
+    }
+
+    private moduleUninstall(option: string): void {
+        for (const module of this.installerHook.modulesList){
+            if(module.name === option){
+                _.map(module.services, async service => {
+                    service.actions = this.actions;
+                    await service.uninstall();
+                });
+            }
+        logger.info(`The module ${option} has been uninstalled`);
+        }
+    }
+
+    private serviceUninstall(option: string): void {
+        _.map(this.installerHook.servicesList, async service => {
+            if (option === service.serviceName){
+                service.actions = this.actions;
+                await service.uninstall();
+            }
+        });
+        logger.info(`The service ${option} has been uninstalled`);
     }
 
     private async serviceInstall(option: string): Promise<void> {
@@ -82,7 +103,7 @@ export class EasyKube extends Context {
         await this.kubeCluster.install();
     }
 
-    private async installAllServices(): Promise<void> {
+    private installAllServices(): void {
         _.map(this.installerHook.servicesList, async service => {
             service.actions = this.actions;
             await service.install();

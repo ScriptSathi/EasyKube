@@ -28,12 +28,12 @@ export class HelmAction {
         _wait = false, 
         timeout = 90, 
     }: helmUpgrade): Promise<void> {
-        function setAuildArgs(setArgsArr: string[]): string {
-            let setAargs = '';
+        function buildSetArgs(setArgsArr: string[]): string {
+            let _setArgs = '';
             _.forEach(setArgsArr, arg => {
-                setAargs += `--set=${arg} `;
+                _setArgs += `--set=${arg} `;
             });
-            return setAargs;
+            return _setArgs;
         }
         const waitCmd = _wait ? `--timeout=${timeout}s --wait` : '';
         const createNsCmd = createNs ? '--create-namespace ' : '';
@@ -48,7 +48,7 @@ export class HelmAction {
                 `--namespace=${namespace} ` +
                 `${createNsCmd}` +
                 `${chartVersionCmd}`+
-                `${setAuildArgs(setArgs)} ` +
+                `${buildSetArgs(setArgs)} ` +
                 `${waitCmd}`,
             );
         }

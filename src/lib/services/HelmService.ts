@@ -35,10 +35,20 @@ export class HelmService extends HelmServiceRaw {
         _.assign(this, helmData);
     }
 
-    /* eslint-disable-next-line  @typescript-eslint/no-empty-function */
-    public async install(): Promise<void> {}
-    /* eslint-disable-next-line  @typescript-eslint/no-empty-function */
-    public async uninstall(): Promise<void> {}
+    public async install(): Promise<void> {
+        await this.actions.helm.upgrade({ 
+            namespace: this.namespace,
+            repoName: this.helmRepositoryData.repoName,
+            repoUrl: this.helmRepositoryData.repoUrl,
+            chartName: this.chartName,
+            chartVersion: this.chartVersion,
+            setArgs: this.set,
+        });
+    }
+
+    public async uninstall(): Promise<void> {
+        this.actions.helm.uninstall(this.chartName, this.namespace);
+    }
 }
 
 export type THelmService = new () => HelmService;
