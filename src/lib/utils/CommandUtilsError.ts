@@ -15,7 +15,7 @@ export class CommandUtilsError extends Error {
         return ErrorCodes;
     }
 
-    constructor(code: number, message: string) {
+    public constructor(code: number, message: string) {
         super(`${ErrorCodes[code]}(${code}) ${message}`);
         assert.ok(ErrorCodes[code]);
         this.code = code;

@@ -35,7 +35,7 @@ export class KubeCluster {
         logger.info('Create cluster');
         if (! await this.isClusterAlreadyExist()) {
             await this.actions.utils.spawnAndDisplay(
-                `kind create cluster --image=kindest/node:v1.22.4 ` +
+                `kind create cluster --image=kindest/node:${Constants.kubernetesVersion} ` +
                 `--name=${Constants.clusterName} ` +
                 `--kubeconfig=${this.kubeConfig} ` +
                 `--config=${fileGenerator.filePath}`,

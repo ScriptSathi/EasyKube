@@ -12,7 +12,7 @@ export class EasyKube extends Context {
     private kubeCluster: KubeCluster;
     private actions: Actions;
 
-    constructor(installerHook: InstallerHook, debugMode: boolean){
+    public constructor(installerHook: InstallerHook, debugMode: boolean){
         super();
         this.setContext(debugMode);
         this.installerHook = installerHook;

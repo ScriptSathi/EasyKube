@@ -9,7 +9,7 @@ export class Actions {
     public kubectl: KubeAction;
     public utils: CommandUtils;
 
-    constructor(helmCommand: string, kubectlCommand: string, debugMode: boolean){
+    public constructor(helmCommand: string, kubectlCommand: string, debugMode: boolean){
         this.debugMode = debugMode;
         this.utils = new CommandUtils(helmCommand, kubectlCommand, debugMode);
         this.kubectl = new KubeAction(this.utils);

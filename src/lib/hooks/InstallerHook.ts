@@ -21,7 +21,7 @@ export class InstallerHook {
         ];
     }
 
-    private static get UnbuildmoduleList(): TUnbuildmodules[] {
+    private static get UnbuildModulesList(): TUnbuildmodules[] {
         return [
             {
                 name: 'metrics',
@@ -36,7 +36,7 @@ export class InstallerHook {
     public servicesList: HelmService[];
     public modulesList: TmodulesList;
 
-    constructor() {
+    public constructor() {
         this.servicesList = this.buildServicesList();
         this.modulesList = this.buildModuleList();
     }
@@ -49,7 +49,7 @@ export class InstallerHook {
 
     private buildModuleList(): TmodulesList {
         const modulesList: TmodulesList = []; 
-        for (const module of InstallerHook.UnbuildmoduleList) {
+        for (const module of InstallerHook.UnbuildModulesList) {
             const _module: Tmodule = {
                 name: module.name,
                 services: [],

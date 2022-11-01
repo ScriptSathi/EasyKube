@@ -2,7 +2,7 @@ import { HelmService } from './HelmService';
 import { logger } from '../utils/Logger';
 
 export class MetricsServer extends HelmService {
-    public  constructor() {
+    public constructor() {
         super({
             serviceName: 'metrics-server',
             namespace: 'kube-system',

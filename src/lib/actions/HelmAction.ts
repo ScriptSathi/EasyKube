@@ -9,7 +9,7 @@ export class HelmAction {
     public helmCommand: string;
     public utils: CommandUtils;
 
-    constructor(utils: CommandUtils){
+    public constructor(utils: CommandUtils){
         this.debugMode = utils.debugMode;
         this.helmCommand = utils.helmCommand;
         this.utils = utils;

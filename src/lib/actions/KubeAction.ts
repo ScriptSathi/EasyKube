@@ -6,7 +6,7 @@ export class KubeAction {
     public kubectlCommand: string;
     public utils: CommandUtils;
 
-    constructor(utils: CommandUtils){
+    public constructor(utils: CommandUtils){
         this.debugMode = utils.debugMode;
         this.kubectlCommand = utils.kubectlCommand;
         this.utils = utils;
