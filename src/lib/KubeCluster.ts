@@ -46,9 +46,9 @@ export class KubeCluster {
     }
 
     public async uninstall(): Promise<void> {
-        logger.info('Delete cluster');
-        this.actions.utils.execAndReturn(`kind delete clusters ` + 
-            `--kubeconfig=${this.kubeConfig} ${Constants.clusterName}`);
+        await this.actions.utils.execAndReturn(`kind delete clusters ` + 
+        `--kubeconfig=${this.kubeConfig} ${Constants.clusterName}`);
+        logger.info('Cluster deleted successfully');
     }
 
     public async isClusterAlreadyExist(): Promise<boolean> {
