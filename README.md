@@ -50,7 +50,7 @@ chmod +x ./kind && \
 sudo ln -s ./kind /usr/local/bin/kind && \
 cd -
 ```
-### Install Helm
+### Install [Helm](https://helm.sh/docs/intro/install/#from-script) (version > 3.7.1)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash

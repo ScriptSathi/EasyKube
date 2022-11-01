@@ -13,42 +13,7 @@ async function main(): Promise<void> {
     let easyKubeInstaller: EasyKube;
 
     const argv = await yargs
-        .command('install [option]', 'Allow you to install microservices',
-            async (args: yargs.Argv) => {
-                return args
-                    .example(yargsHelper.moduleExamples('install'))
-                    .positional('option', {
-                        choices: yargsHelper.moduleOptions,
-                        describe: `Run easykube with specific option`,
-                        type: 'string',
-                    });
-            }, async (_argv: yargs.Arguments) => {
-                if (_argv.option !== '' && _argv.option !== undefined) {
-                    await easyKubeInstaller.install(_argv.option as string);
-                } else {
-                    logger.info(_argv.option);
-                    yargs.showHelp();
-                    process.exit(1);
-                }
-            })
-        .command('uninstall [option]', 'Allow you to uninstall a microservice',
-            async (args: yargs.Argv) => {
-                return args
-                    .example(yargsHelper.serviceExamples('uninstall'))
-                    .positional('option', {
-                        choices: yargsHelper.servicesOptions,
-                        describe: `Run easykube with specific option`,
-                        type: 'string',
-                    });
-            }, async (_argv: yargs.Arguments) => {
-                if (_argv.option !== '') {
-                    // TODO
-                } else {
-                    logger.info(_argv.option);
-                    yargs.showHelp();
-                    process.exit(1);
-                }
-            })
+        .commandDir('commands')
         .command(['stop [name]', '$1'],
             `Allow you to stop a running microservice or full domain of microservices`,
             async (args: yargs.Argv) => {
@@ -129,11 +94,14 @@ async function main(): Promise<void> {
             easyKubeInstaller = new EasyKube(yargsHelper.serviceHook, _argv.debug as boolean);
             return true;
         })
+        .demandCommand()
         .strict(true)
         .showHelpOnFail(true)
         .usage('Usage: $0 <command>')
         .help('help')
         .locale('en')
+        .completion('autocompletion', 
+            'Generate the autocompletion script for bash/zsh. You need to put the generated code in your .bashrc/.zshrc and reload your shell')
         .argv;
 
     /* eslint-disable-next-line  @typescript-eslint/no-explicit-any */

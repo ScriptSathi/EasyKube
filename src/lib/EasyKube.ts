@@ -21,16 +21,17 @@ export class EasyKube extends Context {
     }
 
     public async install(option: string, isAModule: boolean = true): Promise<void> {
-        if (option === 'all'){
-            await this.installCluster();
-            await this.installAllServices();
-        }
-        else if (option === 'cluster') {
-            await this.installCluster();
-        }
-        else if (await this.kubeCluster.isClusterAlreadyExist()){
+        if (await this.kubeCluster.isClusterAlreadyExist()){
             if (isAModule){
-                this.moduleInstall(option);
+                if (option === 'all'){
+                    await this.installCluster();
+                    await this.installAllServices();
+                }
+                else if (option === 'cluster') {
+                    await this.installCluster();
+                } else {
+                    this.moduleInstall(option);
+                }
             } else {
                 this.serviceInstall(option);
             }
@@ -40,7 +41,7 @@ export class EasyKube extends Context {
         }
     }
 
-    public async uninstall(option: string): Promise<void> {
+    public async uninstall(option: string, isAModule: boolean = true): Promise<void> {
         if (await this.kubeCluster.isClusterAlreadyExist()){
             _.map(this.installerHook.servicesList, async service => {
                 if (option === service.serviceName){

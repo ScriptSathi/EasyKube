@@ -12,7 +12,7 @@ export class YargsHelper {
         });
     }
 
-    public get moduleOptions(): string[] {
+    public get modulesOptions(): string[] {
         return ['all', 'cluster'].concat(_.map(this.serviceHook.modulesList, (service) => {
             return service.name;
         }));
@@ -28,7 +28,7 @@ export class YargsHelper {
         });
     }
 
-    public moduleExamples(cmd: string): ReadonlyArray<[string, string]> {
+    public modulesExamples(cmd: string): ReadonlyArray<[string, string]> {
         const cmd_upper = cmd.charAt(0).toUpperCase() + cmd.slice(1);
         return _.map(this.serviceHook.modulesList, module => {
             const servicesInModule = _.map(module.services, service => {
