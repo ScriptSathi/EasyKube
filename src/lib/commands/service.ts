@@ -5,7 +5,7 @@ import { YargsHelper } from './../YargsHelper';
 
 const yargsHelper = new YargsHelper();
 
-exports.command = 'service [name]';
+exports.command = ['service [name]', 's'];
 exports.description = 'Manage a specific service on the cluster';
 exports.builder = (argv: Argv) => {
     const previousCmd = process.argv[2];
@@ -22,7 +22,7 @@ exports.handler =
     async (args: Arguments<{name: string; debug: boolean}>) => {
         if (args.name !== '' && args.name !== undefined) {
             const easyKubeInstaller = new EasyKube(yargsHelper.serviceHook, args.debug);
-            switch (args._[0]){
+            switch (yargsHelper.getNameFromAlias(process.argv[2])){
             case 'install':
                 await easyKubeInstaller.install(args.name, false);
                 break;

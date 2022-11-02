@@ -1,8 +1,16 @@
 import * as _ from 'lodash';
 
 import { InstallerHook } from './hooks/InstallerHook';
+import { logger } from './utils/Logger';
 
 export class YargsHelper {
+
+    public commandAliasesList = {
+        install: ['i', 'in'],
+        uninstall: ['rm', 'un'],
+        start: ['up', 'u'],
+        stop: ['down', 'd'],
+    }
 
     public serviceHook: InstallerHook = new InstallerHook();
 
@@ -39,5 +47,20 @@ export class YargsHelper {
                 `${cmd_upper} the ${module.name} module which include the services: ${servicesInModule}`,
             ];
         });
+    }
+
+    public mainCommandsDetails(cmd: string){
+        return [`${cmd} <module|service>`].concat(this.commandAliasesList[cmd]);
+    }
+
+    public getNameFromAlias(cmd: string): string {
+        for (const key in this.commandAliasesList) {
+            for (const alias of this.commandAliasesList[key]){
+                if (cmd === alias) {
+                    return key;
+                }
+            }
+        }
+        return '';
     }
 }

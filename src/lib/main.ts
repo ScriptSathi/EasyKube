@@ -13,7 +13,7 @@ function main(): void {
     let easyKubeInstaller: EasyKube;
 
     const argv = yargs
-        .command(['install <module|service>', '$1'],
+        .command(yargsHelper.mainCommandsDetails('install'),
             `Install a module or a service on the cluster`, 
             (args: yargs.Argv) => {
                 return args
@@ -22,7 +22,7 @@ function main(): void {
                     .strict(true)
                     .showHelpOnFail(true);
         })
-        .command(['uninstall <module|service>', '$1'],
+        .command(yargsHelper.mainCommandsDetails('uninstall'),
             `Uninstall a module or a service on the cluster`, 
             (args: yargs.Argv) => {
                 return args
@@ -31,7 +31,7 @@ function main(): void {
                     .strict(true)
                     .showHelpOnFail(true);
         })
-        .command(['stop <module|service>', '$1'],
+        .command(yargsHelper.mainCommandsDetails('stop'),
             `Allow you to stop a running microservice or full domain of microservices`,
             (args: yargs.Argv) => {
                 return args
@@ -40,7 +40,7 @@ function main(): void {
                     .strict(true)
                     .showHelpOnFail(true);
         })
-        .command(['start <module|service>', '$1'],
+        .command(yargsHelper.mainCommandsDetails('start'),
             `Allow you to start a stopped microservice or full domain of microservices`,
             (args: yargs.Argv) => {
                 return args
@@ -49,7 +49,7 @@ function main(): void {
                     .strict(true)
                     .showHelpOnFail(true);
         })
-        .command('destroy-cluster', 'Destroy the kubernetes cluster',
+        .command(['destroy-cluster', 'del', 'destroy'], 'Destroy the kubernetes cluster',
             _.noop, () => {
                 easyKubeInstaller.deleteCluster();
         })
