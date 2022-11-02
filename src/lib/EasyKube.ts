@@ -53,6 +53,30 @@ export class EasyKube extends Context {
         }
     }
 
+    public async stop(option: string, isAModule: boolean = true){
+        if (await this.kubeCluster.isClusterAlreadyExist()){
+            if (isAModule){
+                this.moduleStop(option);
+            } else {
+                this.serviceStop(option);
+            }
+        } else {
+            logger.info('The cluster does not exists !');
+        }
+    }
+
+    public async start(option: string, isAModule: boolean = true){
+        if (await this.kubeCluster.isClusterAlreadyExist()){
+            if (isAModule){
+                this.moduleStart(option);
+            } else {
+                this.serviceStart(option);
+            }
+        } else {
+            logger.info('The cluster does not exists !');
+        }
+    }
+
     public async deleteCluster(): Promise<void> {
         await this.kubeCluster.uninstall();
     }
@@ -61,9 +85,8 @@ export class EasyKube extends Context {
         _.map(this.installerHook.modulesList, module => {
             if (option === module.name){
                 _.map(module.services, async service => {
-                    service.actions = this.actions;
-                    await service.install();
-                    await this.actions.kubectl.addEasyKubeLabels(service.namespace, service.serviceName, module.name);
+                    await service.install(this.actions);
+                    this.actions.kubectl.addEasyKubeLabels(service.namespace, service.serviceName, module.name);
                 });
             }
         });
@@ -73,32 +96,69 @@ export class EasyKube extends Context {
         for (const module of this.installerHook.modulesList){
             if (module.name === option){
                 _.map(module.services, async service => {
-                    service.actions = this.actions;
-                    await service.uninstall();
+                    await service.uninstall(this.actions);
                 });
             }
             logger.info(`The module ${option} has been uninstalled`);
         }
     }
 
+    private moduleStop(option: string): void {
+        for (const module of this.installerHook.modulesList){
+            if (module.name === option){
+                _.map(module.services, async service => {
+                    await this.actions.kubectl.stop(service.namespace, service.serviceName, 'module', option);
+                });
+            }
+            logger.info(`The module ${option} has been stopped`);
+        }
+    }
+
+    private moduleStart(option: string): void {
+        for (const module of this.installerHook.modulesList){
+            if (module.name === option){
+                _.map(module.services, async service => {
+                    await this.actions.kubectl.start(service.namespace, service.serviceName, 'module', option);
+                });
+            }
+            logger.info(`The module ${option} has been started`);
+        }
+    }
+
     private serviceUninstall(option: string): void {
         _.map(this.installerHook.servicesList, async service => {
             if (option === service.serviceName){
-                service.actions = this.actions;
-                await service.uninstall();
+                await service.uninstall(this.actions);
             }
         });
         logger.info(`The service ${option} has been uninstalled`);
     }
 
-    private async serviceInstall(option: string): Promise<void> {
+    private serviceInstall(option: string): void {
         _.map(this.installerHook.servicesList, async service => {
             if (option === service.serviceName){
-                service.actions = this.actions;
-                await service.install();
-                await this.actions.kubectl.addEasyKubeLabels(service.namespace, service.serviceName);
+                await service.install(this.actions);
+                this.actions.kubectl.addEasyKubeLabels(service.namespace, service.serviceName);
             }
         });
+    }
+
+    private serviceStop(option: string): void {
+        _.map(this.installerHook.servicesList, async service => {
+            if (option === service.serviceName){
+                await this.actions.kubectl.stop(service.namespace, service.serviceName, 'service', option);
+            }
+        });
+        logger.info(`The service ${option} has been stopped`);
+    }
+
+    private serviceStart(option: string): void {
+        _.map(this.installerHook.servicesList, async service => {
+            if (option === service.serviceName){
+                await this.actions.kubectl.start(service.namespace, service.serviceName, 'service', option);
+            }
+        });
+        logger.info(`The service ${option} has been started`);
     }
 
     private async installCluster(): Promise<void> {
@@ -107,8 +167,7 @@ export class EasyKube extends Context {
 
     private installAllServices(): void {
         _.map(this.installerHook.servicesList, async service => {
-            service.actions = this.actions;
-            await service.install();
+            await service.install(this.actions);
         });
     }
 }

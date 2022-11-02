@@ -35,7 +35,8 @@ export class HelmService extends HelmServiceRaw {
         _.assign(this, helmData);
     }
 
-    public async install(): Promise<void> {
+    public async install(actions: Actions): Promise<void> {
+        this.actions = actions;
         await this.actions.helm.upgrade({ 
             namespace: this.namespace,
             repoName: this.helmRepositoryData.repoName,
@@ -46,7 +47,8 @@ export class HelmService extends HelmServiceRaw {
         });
     }
 
-    public async uninstall(): Promise<void> {
+    public async uninstall(actions: Actions): Promise<void> {
+        this.actions = actions;
         this.actions.helm.uninstall(this.chartName, this.namespace);
     }
 }

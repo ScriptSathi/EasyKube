@@ -5,36 +5,37 @@ import { YargsHelper } from '../YargsHelper';
 
 const yargsHelper = new YargsHelper();
 
-exports.command = 'module [name]';
-exports.desc = 'Manage a module on the cluster';
+exports.command = ['module [name]', '$2'];
+exports.describe = 'Manage a module on the cluster';
 exports.builder = (argv: Argv) => {
-    const previousCmd = (argv.argv as Arguments)._[0];
+    const previousCmd = process.argv[2];
     return argv
         .example(yargsHelper.modulesExamples(`${previousCmd} module`))
         .positional('name', {
             choices: yargsHelper.modulesOptions,
             describe: `Name of the module to ${previousCmd}`,
             type: 'string',
-        });
+        })
+        .showHelpOnFail(true);
     };
 exports.handler =
-    async (args: Arguments<{name: string; debug: boolean}>) => {
+    (args: Arguments<{name: string; debug: boolean}>) => {
         if (args.name !== '' && args.name !== undefined) {
             const easyKubeInstaller = new EasyKube(yargsHelper.serviceHook, args.debug);
             switch (args._[0]){
             case 'install':
-                await easyKubeInstaller.install(args.name);
+                easyKubeInstaller.install(args.name);
                 break;
             case 'uninstall':
-                await easyKubeInstaller.uninstall(args.name);
+                easyKubeInstaller.uninstall(args.name);
                 break;
-            case 'service':
-                throw new Error('Not implemented');
+            case 'start':
+                easyKubeInstaller.start(args.name);
                 break;
-            case 'module':
-                throw new Error('Not implemented');
+            case 'stop':
+                easyKubeInstaller.stop(args.name);
                 break;
-            }
+            }        
         } else {
             showHelp();
             process.exit(1);

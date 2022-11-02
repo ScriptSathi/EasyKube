@@ -6,16 +6,17 @@ import { YargsHelper } from './../YargsHelper';
 const yargsHelper = new YargsHelper();
 
 exports.command = 'service [name]';
-exports.desc = 'Manage a specific service on the cluster';
+exports.description = 'Manage a specific service on the cluster';
 exports.builder = (argv: Argv) => {
-    const previousCmd = (argv.argv as Arguments)._[0];
+    const previousCmd = process.argv[2];
     return argv
         .example(yargsHelper.serviceExamples(`${previousCmd} service`))
         .positional('name', {
             choices: yargsHelper.servicesOptions,
             describe: `Name of the service to ${previousCmd}`,
             type: 'string',
-        });
+        })
+        .showHelpOnFail(true);
     };
 exports.handler =
     async (args: Arguments<{name: string; debug: boolean}>) => {
@@ -28,11 +29,11 @@ exports.handler =
             case 'uninstall':
                 await easyKubeInstaller.uninstall(args.name, false);
                 break;
-            case 'service':
-                throw new Error('Not implemented');
+            case 'start':
+                await easyKubeInstaller.start(args.name);
                 break;
-            case 'module':
-                throw new Error('Not implemented');
+            case 'stop':
+                await easyKubeInstaller.stop(args.name);
                 break;
             }        
         } else {

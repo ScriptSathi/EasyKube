@@ -31,7 +31,7 @@ function main(): void {
                     .strict(true)
                     .showHelpOnFail(true);
         })
-        .command(['stop [name]', '$1'],
+        .command(['stop <module|service>', '$1'],
             `Allow you to stop a running microservice or full domain of microservices`,
             (args: yargs.Argv) => {
                 return args
@@ -40,7 +40,7 @@ function main(): void {
                     .strict(true)
                     .showHelpOnFail(true);
         })
-        .command(['start [name]', '$1'],
+        .command(['start <module|service>', '$1'],
             `Allow you to start a stopped microservice or full domain of microservices`,
             (args: yargs.Argv) => {
                 return args
@@ -50,8 +50,8 @@ function main(): void {
                     .showHelpOnFail(true);
         })
         .command('destroy-cluster', 'Destroy the kubernetes cluster',
-            _.noop, async () => {
-                await easyKubeInstaller.deleteCluster();
+            _.noop, () => {
+                easyKubeInstaller.deleteCluster();
         })
         .option('debug', {
             alias: 'd',
@@ -71,7 +71,7 @@ function main(): void {
         .completion('autocompletion', 
             'Generate the autocompletion script for bash/zsh. You need to put the generated code in your .bashrc/.zshrc and reload your shell')
         .argv;
-
+    
     if (!(argv as yargs.Arguments)._.length) {
         yargs.showHelp();
         process.exit(1);
