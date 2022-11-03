@@ -56,7 +56,7 @@ export class YargsHelper {
     public getNameFromAlias(cmd: string): string {
         for (const key in this.commandAliasesList) {
             for (const alias of this.commandAliasesList[key]){
-                if (cmd === alias) {
+                if (cmd === alias || cmd === key) {
                     return key;
                 }
             }

@@ -23,18 +23,18 @@ exports.handler =
         if (args.name !== '' && args.name !== undefined) {
             const easyKubeInstaller = new EasyKube(yargsHelper.serviceHook, args.debug);
             switch (yargsHelper.getNameFromAlias(process.argv[2])){
-            case 'install':
-                await easyKubeInstaller.install(args.name, false);
-                break;
-            case 'uninstall':
-                await easyKubeInstaller.uninstall(args.name, false);
-                break;
-            case 'start':
-                await easyKubeInstaller.start(args.name);
-                break;
-            case 'stop':
-                await easyKubeInstaller.stop(args.name);
-                break;
+                case 'install':
+                    await easyKubeInstaller.install(args.name, false);
+                    break;
+                case 'uninstall':
+                    await easyKubeInstaller.uninstall(args.name, false);
+                    break;
+                case 'start':
+                    await easyKubeInstaller.start(args.name);
+                    break;
+                case 'stop':
+                    await easyKubeInstaller.stop(args.name);
+                    break;
             }        
         } else {
             showHelp();
