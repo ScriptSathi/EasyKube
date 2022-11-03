@@ -35,6 +35,7 @@ module.exports = {
             },
         }],
         '@typescript-eslint/indent': ['error', 4, {
+            'SwitchCase': 1,
             'FunctionDeclaration': {
                 'parameters': 'first',
             },
