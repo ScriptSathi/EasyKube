@@ -1,7 +1,6 @@
 import * as _ from 'lodash';
 
 import { InstallerHook } from './hooks/InstallerHook';
-import { logger } from './utils/Logger';
 
 export class YargsHelper {
 
@@ -10,7 +9,7 @@ export class YargsHelper {
         uninstall: ['rm', 'un'],
         start: ['up', 'u'],
         stop: ['down', 'd'],
-    }
+    };
 
     public serviceHook: InstallerHook = new InstallerHook();
 
@@ -55,9 +54,11 @@ export class YargsHelper {
 
     public getNameFromAlias(cmd: string): string {
         for (const key in this.commandAliasesList) {
-            for (const alias of this.commandAliasesList[key]){
-                if (cmd === alias || cmd === key) {
-                    return key;
+            if (Object.prototype.hasOwnProperty.call(this.commandAliasesList, key)){
+                for (const alias of this.commandAliasesList[key]){
+                    if (cmd === alias || cmd === key) {
+                        return key;
+                    }
                 }
             }
         }
